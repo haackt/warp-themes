@@ -45,6 +45,8 @@ function AppDialogDownload() {
 						content: {
 							accent: context.accent.color,
 							background: context.background.color,
+							backgroundImage: context.background.use == 'image' ? context.background.image : undefined,
+							backgroundOpacity: context.background.use == 'image' ? context.background.imageOpacity : undefined,
 							foreground: context.foreground,
 							details: context.details,
 							terminal_colors: context.terminal_colors,
@@ -55,6 +57,12 @@ function AppDialogDownload() {
 
 			setTId(json.tId);
 		} catch (_) {
+			if (context.background.use == 'image') {
+				alert(
+					"Our service currently isn't fully operational. Please try to download a theme without a background image."
+				);
+				return;
+			}
 			setTId(`h/${hashTheme()}`);
 		}
 
