@@ -4,7 +4,7 @@ function WarpAppPrompt() {
 	const [context, _] = useAppContext();
 
 	return (
-		<div className=' pl-4 pt-3 pb-4 font-mono'>
+		<div className='relative pt-3 pb-4 pl-4 font-mono'>
 			<p className='text-sm font-semibold' style={{ color: context.terminal_colors.normal.magenta }}>
 				~/warp-themes
 				<span style={{ color: context.terminal_colors.normal.green }}>

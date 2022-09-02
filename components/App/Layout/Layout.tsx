@@ -3,6 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 import AppDialogAbout from '../Dialogs/About';
+import AppDialogSettings from '../Dialogs/Settings';
 import Link from 'next/link';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 
@@ -14,6 +15,7 @@ interface Props {
 
 function AppLayout(props: Props) {
 	const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
+	const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
 
 	useEffect(() => {
 		window.onbeforeunload = function () {
@@ -30,7 +32,7 @@ function AppLayout(props: Props) {
 				leaveFrom='opacity-100'
 				leaveTo='opacity-0'
 			>
-				<div className='bg-white px-6 py-4 shadow-md rounded-md'>
+				<div className='px-6 py-4 bg-white rounded-md shadow-md'>
 					<p>
 						Welcome to <span className='font-medium'>Warp-Themes</span>! 👋 <br />
 						<i>Warp-Themes</i> is a theme builder for{' '}
@@ -41,7 +43,7 @@ function AppLayout(props: Props) {
 					</p>
 					<div className='flex gap-2 mt-1'>
 						<label
-							className='btn flex-grow btn-ghost text-primary modal-button'
+							className='flex-grow btn btn-ghost text-primary modal-button'
 							onClick={() => {
 								setIsAboutDialogOpen(true);
 								toast.dismiss(toastId);
@@ -49,7 +51,7 @@ function AppLayout(props: Props) {
 						>
 							Learn more
 						</label>
-						<button onClick={() => toast.dismiss(toastId)} className='btn btn-ghost flex-grow text-red-500'>
+						<button onClick={() => toast.dismiss(toastId)} className='flex-grow text-red-500 btn btn-ghost'>
 							Dismiss
 						</button>
 					</div>
@@ -67,23 +69,19 @@ function AppLayout(props: Props) {
 					leaveFrom='opacity-100'
 					leaveTo='opacity-0'
 				>
-					<div className='bg-white px-6 py-4 shadow-md rounded-md text-right'>
+					<div className='px-6 py-4 text-right bg-white rounded-md shadow-md'>
 						<p>
-							We also got a VS-Code extension called <span className='font-semibold'>Warp-Companion</span>{' '}
-							🧙🏻‍♂️
+							We also got a VS-Code extension called <span className='font-semibold'>Warp-Companion</span> 🧙🏻‍♂️
 							<br />
 							It <i>synchronizes</i> your VS-Code theme with Warp ✨
 						</p>
 						<div className='flex mt-1'>
 							<Link href='/companion' passHref>
-								<a target='_blank' className='btn flex-grow btn-ghost text-primary gap-2'>
+								<a target='_blank' className='flex-grow gap-2 btn btn-ghost text-primary'>
 									Try it out now <ExternalLinkIcon className='w-4 h-4' />
 								</a>
 							</Link>
-							<button
-								onClick={() => toast.dismiss(companionToast)}
-								className='btn btn-ghost flex-grow text-red-500'
-							>
+							<button onClick={() => toast.dismiss(companionToast)} className='flex-grow text-red-500 btn btn-ghost'>
 								Dismiss
 							</button>
 						</div>
@@ -94,18 +92,20 @@ function AppLayout(props: Props) {
 	}, []);
 
 	return (
-		<div className='flex h-screen flex-col bg-slate-100 sm:bg-white overflow-y-hidden'>
+		<div className='flex flex-col h-screen overflow-y-hidden bg-slate-100 sm:bg-white'>
 			<AppDialogAbout _open={isAboutDialogOpen} _onClose={() => setIsAboutDialogOpen(false)} />
-			<div className='w-full border-b z-20 hidden sm:block'>{props.Navbar}</div>
-			<div className='flex h-full flex-row z-10'>
-				<div className='w-auto border-r hidden sm:block'>{props.Sidebar}</div>
-				<div className='w-full flex flex-col pt-20 scale-50 sm:scale-100 justify-center items-center flex-grow bg-slate-100'>
+			<AppDialogSettings _open={isSettingsDialogOpen} _onClose={() => setIsSettingsDialogOpen(false)} />
+
+			<div className='z-20 hidden w-full border-b sm:block'>{props.Navbar}</div>
+			<div className='z-10 flex flex-row h-full'>
+				<div className='hidden w-auto border-r sm:block'>{props.Sidebar}</div>
+				<div className='flex flex-col items-center justify-center flex-grow w-full pt-20 scale-50 sm:scale-100 bg-slate-100'>
 					{props.WarpApp}
-					<div className='alert alert-warning shadow-lg landscape:hidden lg:hidden scale-150 sm:scale-100 mt-12'>
+					<div className='mt-12 scale-150 shadow-lg alert alert-warning landscape:hidden lg:hidden sm:scale-100'>
 						<div>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
-								className='stroke-current flex-shrink-0 h-6 w-6'
+								className='flex-shrink-0 w-6 h-6 stroke-current'
 								fill='none'
 								viewBox='0 0 24 24'
 							>
@@ -121,11 +121,7 @@ function AppLayout(props: Props) {
 					</div>
 				</div>
 			</div>
-			<Toaster
-				containerClassName='z-20 hidden sm:block'
-				position='bottom-right'
-				toastOptions={{ duration: 10000 }}
-			/>
+			<Toaster containerClassName='z-20 hidden sm:block' position='bottom-right' toastOptions={{ duration: 10000 }} />
 		</div>
 	);
 }

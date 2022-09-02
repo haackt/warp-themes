@@ -1,10 +1,10 @@
-import { useState, useEffect, Fragment } from 'react';
+import { Fragment } from 'react';
 import { useAppContext } from '@lib/AppContext';
-
 import ColorInput from './ColorInput';
 import { Tab } from '@headlessui/react';
 import ThemeInput from './ThemeInput';
 import SidebarTitle from './Title';
+import ImageInput from './ImageInput';
 
 function AppSidebar() {
 	const [context, setContext] = useAppContext();
@@ -15,7 +15,7 @@ function AppSidebar() {
 	];
 
 	return (
-		<div className='px-4 pt-20 h-full overflow-y-scroll w-fit bg-base-100 text-base-content z-40'>
+		<div className='z-40 h-full px-4 pt-20 overflow-y-scroll w-fit bg-base-100 text-base-content'>
 			<ThemeInput
 				themeValue={context.name}
 				themeOnChange={(n) => setContext({ ...context, name: n })}
@@ -23,39 +23,57 @@ function AppSidebar() {
 				detailsOnChange={(d) => setContext({ ...context, details: d })}
 			/>
 			<SidebarTitle>General Colors</SidebarTitle>
-			<div className='mb-4 flex flex-row space-x-6'>
-				<ColorInput
-					name='Accent'
-					color={context.accent.color}
-					setColor={(c) => setContext({ ...context, accent: { ...context.accent, color: c } })}
-				/>
-				<ColorInput
-					name='Background'
-					color={context.background.color}
-					setColor={(c) =>
-						setContext({
-							...context,
-							background: {
-								...context.background,
-								color: c,
-							},
-						})
-					}
-				/>
-				<ColorInput
-					name='Foreground'
-					color={context.foreground}
-					setColor={(c) =>
-						setContext({
-							...context,
-							foreground: c,
-						})
-					}
-				/>
+			<div className='flex flex-col mb-4'>
+				<div className='flex flex-row space-x-6'>
+					<ColorInput
+						name='Accent'
+						color={context.accent.color}
+						setColor={(c) => setContext({ ...context, accent: { ...context.accent, color: c } })}
+					/>
+					<ColorInput
+						name='Background'
+						color={context.background.color}
+						setColor={(c) =>
+							setContext({
+								...context,
+								background: {
+									...context.background,
+									color: c,
+								},
+							})
+						}
+					/>
+					<ColorInput
+						name='Foreground'
+						color={context.foreground}
+						setColor={(c) =>
+							setContext({
+								...context,
+								foreground: c,
+							})
+						}
+					/>
+				</div>
+				{context.background.use == 'image' ? (
+					<>
+						<ImageInput />
+						<label className='mb-1 font-medium'>Image Opacity</label>
+						<input
+							type='range'
+							min='0'
+							max='100'
+							value={context.background.imageOpacity}
+							onChange={(e) =>
+								setContext({ ...context, background: { ...context.background, imageOpacity: e.target.value } })
+							}
+							className='range range-xs'
+						/>
+					</>
+				) : undefined}
 			</div>
 			<SidebarTitle>Terminal Colors</SidebarTitle>
 			<Tab.Group>
-				<Tab.List className='flex flex-row justify-between space-x-4 rounded-lg py-4 text-lg'>
+				<Tab.List className='flex flex-row justify-between py-4 space-x-4 text-lg rounded-lg'>
 					<Tab as={Fragment}>
 						{({ selected }) => {
 							return <button className={selected ? styles[1] : styles[0]}>Normal</button>;

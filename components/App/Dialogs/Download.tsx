@@ -23,7 +23,7 @@ function AppDialogDownload() {
 					leaveFrom='opacity-100'
 					leaveTo='opacity-0'
 				>
-					<div className='bg-white px-6 py-4 shadow-md rounded-md animate-pulse'>
+					<div className='px-6 py-4 bg-white rounded-md shadow-md animate-pulse'>
 						<p>Preparing download...</p>
 					</div>
 				</Transition>
@@ -136,7 +136,7 @@ function AppDialogDownload() {
 
 	return (
 		<>
-			<button onClick={prepareDownload} className='btn btn-primary gap-2'>
+			<button onClick={prepareDownload} className='gap-2 btn btn-primary'>
 				<DownloadIcon className='w-6 h-6' />
 				Download
 			</button>
@@ -145,43 +145,36 @@ function AppDialogDownload() {
 				<div className='fixed inset-0 bg-black/20 backdrop-blur-sm' aria-hidden='true'></div>
 
 				<div className='fixed inset-0 flex items-center justify-center p-4'>
-					<Dialog.Panel className='mx-auto max-w-5xl w-fit rounded-lg shadow-lg bg-white px-12 py-7'>
-						<Dialog.Title className='text-3xl font-semibold mb-4'>Download</Dialog.Title>
+					<Dialog.Panel className='max-w-5xl px-12 mx-auto bg-white rounded-lg shadow-lg w-fit py-7'>
+						<Dialog.Title className='mb-4 text-3xl font-semibold'>Download</Dialog.Title>
 
 						<div>
 							<span className='badge'>Recommended</span>
 							<h2 className='text-2xl font-medium'>Automatic Installation</h2>
-							<div className='bg-black overflow-x-scroll whitespace-nowrap text-white px-2 py-3 select-all rounded-md shadow-md my-4'>
+							<div className='px-2 py-3 my-4 overflow-x-scroll text-white bg-black rounded-md shadow-md select-all whitespace-nowrap'>
 								<div className='flex flex-row items-center mb-3'>
-									<div className='flex h-full items-start justify-center'>
+									<div className='flex items-start justify-center h-full'>
 										<WarpAppNavbarSystemButtons type='close' />
 										<WarpAppNavbarSystemButtons type='min' />
 										<WarpAppNavbarSystemButtons type='max' />
 									</div>
 								</div>
-								<code className='pr-3 pl-1'>
-									<span
-										style={{ color: context.terminal_colors.normal.magenta }}
-										className='font-semibold'
-									>
+								<code className='pl-1 pr-3'>
+									<span style={{ color: context.terminal_colors.normal.magenta }} className='font-semibold'>
 										curl
 									</span>{' '}
 									<span style={{ color: context.terminal_colors.bright.black }}>-s -N</span>{' '}
-									<span style={{ color: context.terminal_colors.normal.blue }}>
-										'https://warp-themes.com/d/{tId}'
-									</span>{' '}
+									<span style={{ color: context.terminal_colors.normal.blue }}>'https://warp-themes.com/d/{tId}'</span>{' '}
 									<span style={{ color: context.terminal_colors.bright.black }}>|</span>{' '}
 									<span style={{ color: context.terminal_colors.normal.magenta }}>bash</span>
 								</code>
 							</div>
-							<div className='w-full flex flex-row justify-evenly'>
+							<div className='flex flex-row w-full justify-evenly'>
 								<label
-									className='btn bg-black btn-wide swap text-lg'
+									className='text-lg bg-black btn btn-wide swap'
 									role='button'
 									onClick={() => {
-										navigator.clipboard.writeText(
-											`curl -s -N 'https://warp-themes.com/d/${tId}' | bash`
-										);
+										navigator.clipboard.writeText(`curl -s -N 'https://warp-themes.com/d/${tId}' | bash`);
 										setTimeout(() => {
 											//@ts-ignore
 											document.getElementById('copied-curl-code').checked = false;
@@ -192,45 +185,44 @@ function AppDialogDownload() {
 									<div className='swap-on'>✅ Copied</div>
 									<div className='swap-off'>📋 Copy</div>
 								</label>
-								<a className='btn btn-outline btn-wide text-lg' href={`https://warp-themes.com/d/${tId}`} target="_blank">🔍 Inspect Source</a>
+								<a
+									className='text-lg btn btn-outline btn-wide'
+									href={`https://warp-themes.com/d/${tId}`}
+									target='_blank'
+								>
+									🔍 Inspect Source
+								</a>
 							</div>
 						</div>
-						<div className='divider'>OR</div>
-						<div className='text-gray-700'>
-							<h2 className='text-2xl font-medium mb-3'>Manual Installation</h2>
-							<h3 className='text-xl py-3'>Instructions</h3>
-							<ol className='list-decimal ml-4'>
+						<div className={`${context.background.use != 'image' ? 'divider' : 'hidden'}`}>OR</div>
+						<div className={`${context.background.use != 'image' ? 'text-gray-700' : 'hidden'}`}>
+							<h2 className='mb-3 text-2xl font-medium'>Manual Installation</h2>
+							<h3 className='py-3 text-xl'>Instructions</h3>
+							<ol className='ml-4 list-decimal'>
 								<li>Download the file</li>
 								<li>
 									Place the theme file into{' '}
-									<code className='text-sm bg-black text-white px-2 rounded'>~/.warp/themes/</code>
+									<code className='px-2 text-sm text-white bg-black rounded'>~/.warp/themes/</code>
 								</li>
 								<li>Restart Warp</li>
 								<li>
-									Open the Command Palette (<kbd className='kbd kbd-sm'>⌘</kbd> +{' '}
-									<kbd className='kbd kbd-sm'>P</kbd>) and search for <i>Open Theme Picker</i>
+									Open the Command Palette (<kbd className='kbd kbd-sm'>⌘</kbd> + <kbd className='kbd kbd-sm'>P</kbd>)
+									and search for <i>Open Theme Picker</i>
 								</li>
 								<li>Enjoy your new theme ✨</li>
 							</ol>
-							<button
-								onClick={downloadTheme}
-								className='btn mt-2 w-full btn-ghost flex items-center gap-2'
-							>
+							<button onClick={downloadTheme} className='flex items-center w-full gap-2 mt-2 btn btn-ghost'>
 								<DownloadIcon className='w-6 h-6' />
 								Download file
 							</button>
 						</div>
 
 						<div className='divider'></div>
-						<p className='text-xs text-gray-500 text-center'>
+						<p className='text-xs text-center text-gray-500'>
 							{tId && !tId.startsWith('h/') ? (
 								<>
 									<span className='text-gray-600'>🧙🏻‍♂️ Tip: </span> Visit{' '}
-									<a
-										href={`https://warp-themes.com/d/${tId}?raw=true`}
-										target='_blank'
-										className='text-blue-500'
-									>
+									<a href={`https://warp-themes.com/d/${tId}?raw=true`} target='_blank' className='text-blue-500'>
 										https://warp-themes.com/d/{tId}
 										<span className='font-medium text-blue-700'>?raw=true</span>
 									</a>
@@ -238,9 +230,9 @@ function AppDialogDownload() {
 								</>
 							) : (
 								<>
-									<span className='text-red-600'>⚠️ Note: </span> We're currently experiencing some
-									issues with our database provider. That's why we currently aren't able to provide
-									our services in full functionality. <br />
+									<span className='text-red-600'>⚠️ Note: </span> We're currently experiencing some issues with our
+									database provider. That's why we currently aren't able to provide our services in full functionality.{' '}
+									<br />
 									We apologize for the inconvenience.
 								</>
 							)}
